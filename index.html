@@ -448,31 +448,78 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-16 bg-gray-800">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold text-cyan-400 mb-6">Contact Us</h2>
-      <p class="text-gray-300 mb-6">Have questions or want to join a course? Reach out to us for details or demo sessions.</p>
-      <form class="grid grid-cols-1 gap-4 max-w-md mx-auto">
-        <input type="text" placeholder="Full Name" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
-        <input type="email" placeholder="Email Address" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
-        <textarea placeholder="Your Message" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500"></textarea>
-        <button type="submit" class="bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-lg">Send Message</button>
-      </form>
-    </div>
-  </section>
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-gray-800">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl font-bold text-cyan-400 mb-6">Contact Us</h2>
+    <p class="text-gray-300 mb-6">Have questions or want to join a course? Reach out to us for details or demo sessions.</p>
 
-        <hr class="section-divider">
+    <form id="whatsappForm" class="grid grid-cols-1 gap-4 max-w-md mx-auto">
+      <input id="name" type="text" placeholder="Full Name"
+        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
 
-        <footer id="contact" class="bg-gradient-to-r from-cyan-900 via-indigo-900 to-purple-900 text-white py-10 px-6 text-center rounded-t-3xl shadow-inner">
+      <input id="email" type="email" placeholder="Email Address"
+        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
+
+      <textarea id="message" placeholder="Your Message"
+        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500"></textarea>
+
+      <button type="submit"
+        class="bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-lg">
+        Send Message on WhatsApp
+      </button>
+    </form>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-cyan-900 via-indigo-900 to-purple-900 text-white py-10 px-6 text-center rounded-t-3xl shadow-inner">
   <div class="max-w-5xl mx-auto space-y-4">
     <h2 class="text-2xl font-extrabold tracking-wide text-cyan-300 drop-shadow-md">Contact Us</h2>
     <p class="text-gray-200 text-sm">For enrollment details and program information</p>
-    
+
     <div class="text-lg font-medium">
-      <p>Email: <a href="mailto:info@techguardians.in" class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">info@techguardians.in</a></p>
-      <p>Phone: <a href="tel:+917006473877" class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">+91 7006473877</a></p>
+      <p>Email:
+        <a href="mailto:info@techguardians.in"
+          class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">
+          info@techguardians.in
+        </a>
+      </p>
+      <p>Phone:
+        <a href="tel:+917006473877"
+          class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">
+          +91 7006473877
+        </a>
+      </p>
     </div>
+  </div>
+</footer>
+
+<!-- WhatsApp JS -->
+<script>
+document.getElementById("whatsappForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let message = document.getElementById("message").value;
+
+  let whatsappMessage =
+    "New Contact Form Submission:%0A%0A" +
+    "Name: " + name + "%0A" +
+    "Email: " + email + "%0A" +
+    "Message: " + message;
+
+  let phoneNumber = "917006473877"; // Your WhatsApp number
+
+  let url = "https://wa.me/" + phoneNumber + "?text=" + whatsappMessage;
+
+  window.open(url, "_blank");
+});
+</script>
+
 
     <!-- Social Icons -->
     <div class="flex justify-center space-x-6 mt-6">
