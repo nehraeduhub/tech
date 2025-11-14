@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tech Guardians | Secure Your Future</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Poppins:wght@400;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+        /* --- Root Variables & Base --- */
+        :root { 
+            --color-brand-primary: #00ff9d; /* Neon Green */
+            --color-brand-secondary: #00bfff; /* Deep Sky Blue */
+            --color-bg: #020817; /* Very dark background */
+            --color-ink: #e5e7eb; /* Light text */
+            --color-card-bg: rgba(255, 255, 255, 0.05); /* Transparent white */
+            --color-border-subtle: rgba(255, 255, 255, 0.1);
+            --header-height: 70px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-ink);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-top: var(--header-height); /* Offset for fixed header */
+        }
+
+        h1, h2, h3 { 
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.5px;
+        }
+
+        /* Neon Glow Effect */
+        .neon {
+            color: var(--color-brand-primary);
+            text-shadow: 0 0 10px var(--color-brand-primary), 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+
+        /* Glassmorphism Card Style */
+        .glass {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border: 1px solid var(--color-border-subtle);
+            backdrop-filter: blur(6px);
+            transition: transform 0.35s, box-shadow 0.35s;
+        }
+        .glass:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 157, 0.25), 0 0 15px rgba(0, 255, 157, 0.1);
+        }
+        
+        /* Animated background: Grid/lines */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(0,191,255,0.02) 0,
+                rgba(0,191,255,0.02) 1px,
+                transparent 1px,
+                transparent 50px
+            ),
+            repeating-linear-gradient(
+                0deg,
+                rgba(0,191,255,0.02) 0,
+                rgba(0,191,255,0.02) 1px,
+                transparent 1px,
+                transparent 50px
+            );
+            animation: moveLines 60s linear infinite;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        @keyframes moveLines {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        /* --- Fixed Header Navigation --- */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: rgba(2, 8, 23, 0.95); /* Semi-transparent dark bg */
+            border-bottom: 2px solid var(--color-border-subtle);
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .logo-container img {
+            width: 40px;
+            height: auto;
+            margin-right: 10px;
+            filter: drop-shadow(0 0 4px var(--color-brand-secondary));
+        }
+        .logo-container span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--color-brand-secondary);
+        }
+        .nav-links a {
+            color: var(--color-ink);
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            font-weight: 600;
+            transition: color 0.3s, background 0.3s;
+            border-radius: 4px;
+        }
+        .nav-links a:hover {
+            color: var(--color-bg);
+            background: var(--color-brand-primary);
+        }
+        .tagline {
+            font-size: 0.8em;
+            color: var(--color-brand-primary);
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 400;
+        }
+
+
+        /* --- Hero Section Styling (Original Header) --- */
+        #home {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 20px 40px;
+            /* No background here, relies on body and fixed nav */
+        }
+        #home h1 {
+            font-size: 4em;
+            color: var(--color-brand-secondary);
+            margin: 10px 0;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+        }
+        #home .sub-heading {
+            font-size: 1.5em;
+            color: var(--color-brand-primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        /* Mission Banner (The Demo Banner) */
+        .mission-banner {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 25px 20px; 
+            background: linear-gradient(90deg, rgba(0, 255, 157, 0.1) 0%, rgba(0, 191, 255, 0.1) 100%); 
+            border-bottom: 2px solid var(--color-brand-primary);
+        }
+
+        /* --- Sections Layout --- */
+        section {
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+        .section-heading {
+            text-align: center;
+            font-size: 2.2em; 
+            margin-bottom: 40px;
+        }
+        .section-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-border-subtle), transparent);
+            margin: 40px auto;
+            max-width: 800px;
+        }
+        .about-image {
+            float: right;
+            margin: 0 0 20px 30px;
+            border-radius: 8px;
+            width: 40%;
+            max-width: 300px;
+            border: 3px solid var(--color-brand-secondary);
+            box-shadow: 0 0 15px var(--color-brand-secondary);
+        }
+
+        /* Course Cards (Courses Section) */
+        .course-section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+        .course-card {
+            min-height: 380px;
+            /* Inherits .glass properties */
+        }
+        .course-card h3 { color: var(--color-brand-secondary); }
+        .course-card .description { color: #aaa; font-size: 0.95em; }
+        .price { color: var(--color-brand-primary); }
+
+        /* Cyber Range */
+        .range-features span { color: var(--color-brand-primary); }
+        
+        /* --- Buttons & Utilities --- */
+        .btn-group { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .btn-primary { background: var(--color-brand-primary); color: var(--color-bg); border-color: var(--color-brand-primary); }
+        .btn-primary:hover { background: transparent; color: var(--color-brand-primary); box-shadow: 0 0 15px var(--color-brand-primary); }
+        .btn-secondary { background: transparent; color: var(--color-brand-secondary); border-color: var(--color-brand-secondary); }
+        .btn-secondary:hover { background: var(--color-brand-secondary); color: var(--color-bg); box-shadow: 0 0 15px var(--color-brand-secondary); }
+
+        /* --- Footer --- */
+        footer {
+            background: rgba(0, 0, 0, 0.75);
+            border-top: 3px solid var(--color-brand-primary);
+        }
+        footer .social-icons a {
+            color: var(--color-brand-primary);
+            font-size: 1.6em;
+            margin: 0 12px;
+        }
+        footer .social-icons a:hover { 
+            color: var(--color-brand-secondary);
+        }
+
+        @media (max-width: 900px) {
+            .header-nav { padding: 0 20px; }
+            .nav-links { display: none; } /* Simplified for small screens */
+            .logo-container img { width: 30px; }
+            .logo-container span { font-size: 1.2em; }
+            .about-image { float: none; margin: 20px auto; width: 80%; }
+        }
+        @media (max-width: 600px) {
+            #home h1 { font-size: 3em; }
+            #home .sub-heading { font-size: 1.2em; }
+            .btn-group { flex-direction: column; gap: 10px; }
+        }
+    </style>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <div class="bg-animation"></div>
+
+        <div class="header-nav">
+            <a href="#home" class="logo-container">
+                <img
+                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300bfff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/><path d='M12 13V4'/><path d='M16 10l-2 2-2-2'/></svg>"
+                    alt="Tech Guardians Logo" />
+                <span>Tech Guardians</span>
+            </a>
+            
+            <div class="tagline neon"><Br></Br>Keep Learning, Keep Growing.</div>
+
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#courses">Courses</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+
+        <header id="home">
+            <h1>Guardians of the Digital World</h1>
+            <p class="sub-heading">Your hands-on path to learn in Cyber
+                Security.</p>
+
+        </header>
+
+        <!-- Carousel Container -->
+<div class="relative w-full max-w-6xl mx-auto overflow-hidden rounded-2xl shadow-2xl h-[300px]">
+  <div id="carousel" class="flex transition-transform duration-[1500ms] ease-in-out">
+    
+    <!-- Slide 1 -->
+    <div class="carousel-item w-full flex-shrink-0 p-6 text-center bg-gradient-to-r from-cyan-900 to-cyan-700">
+      <h2 class="text-3xl font-extrabold text-white mb-3 drop-shadow-lg"> Network Security Fundamentals</h2>
+      <p class="text-gray-100 text-sm mb-4">
+        Learn firewalls, intrusion detection, and VPNs to safeguard digital infrastructure.
+      </p>
+      <img src="\photo\Network security.png" alt="Network Security"
+           class="object-contain h-[180px] w-full rounded-lg shadow-lg mx-auto hover:scale-105 transition-transform duration-500">
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="carousel-item w-full flex-shrink-0 p-6 text-center bg-gradient-to-r from-indigo-900 to-indigo-700">
+      <h2 class="text-3xl font-extrabold text-white mb-3 drop-shadow-lg">Ethical Hacking & Pen Testing</h2>
+      <p class="text-gray-100 text-sm mb-4">
+        Master Kali Linux, Metasploit, and Burp Suite to identify and fix vulnerabilities.
+      </p>
+      <img src="\photo\Ethical Hacking & Pen Testing.png" alt="Ethical Hacking"
+           class="object-contain h-[180px] w-full rounded-lg shadow-lg mx-auto hover:scale-105 transition-transform duration-500">
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="carousel-item w-full flex-shrink-0 p-6 text-center bg-gradient-to-r from-emerald-900 to-emerald-700">
+      <h2 class="text-3xl font-extrabold text-white mb-3 drop-shadow-lg">Cloud & Endpoint Security</h2>
+      <p class="text-gray-100 text-sm mb-4">
+        Secure your cloud data and manage endpoint protection using advanced tools.
+      </p>
+      <img src="\photo\Cloud & Endpoint Security.png" alt="Cloud Security"
+           class="object-contain h-[180px] w-full rounded-lg shadow-lg mx-auto hover:scale-105 transition-transform duration-500">
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="carousel-item w-full flex-shrink-0 p-6 text-center bg-gradient-to-r from-purple-900 to-purple-700">
+      <h2 class="text-3xl font-extrabold text-white mb-3 drop-shadow-lg">Cyber Forensics & Incident Response</h2>
+      <p class="text-gray-100 text-sm mb-4">
+        Investigate cyberattacks and collect digital evidence using forensics tools.
+      </p>
+      <img src="\photo\Cyber Forensics & Incident Response.png" alt="Cyber Forensics"
+           class="object-contain h-[180px] w-full rounded-lg shadow-lg mx-auto hover:scale-105 transition-transform duration-500">
+    </div>
+
+  </div>
+
+  <!-- Navigation Dots -->
+  <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-3">
+    <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-slide="0"></button>
+    <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-slide="1"></button>
+    <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-slide="2"></button>
+    <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-slide="3"></button>
+  </div>
+</div>
+
+<script>
+  const carousel = document.getElementById("carousel");
+  const slides = document.querySelectorAll(".carousel-item");
+  const dots = document.querySelectorAll("[data-slide]");
+  let index = 0;
+  const total = slides.length;
+
+  function showSlide(i) {
+    carousel.style.transform = `translateX(-${i * 100}%)`;
+    dots.forEach(dot => dot.classList.remove("bg-white"));
+    dots[i].classList.add("bg-white");
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+      index = i;
+      showSlide(index);
+    });
+  });
+
+  function autoSlide() {
+    index = (index + 1) % total;
+    showSlide(index);
+  }
+
+  showSlide(index);
+  setInterval(autoSlide, 4000);
+</script>
+
+  <!-- Navigation Buttons -->
+  <button onclick="moveSlide(-1)" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 hover:bg-black text-white px-3 py-1 rounded-full">❮</button>
+  <button onclick="moveSlide(1)" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 hover:bg-black text-white px-3 py-1 rounded-full">❯</button>
+</div>
+
+        <div class="mission-banner">
+            <h3>Our Mission: Practical, Hands-On Security Training.</h3>
+            <p>100% Live Labs | Expert Mentors | Industry-Recognized
+                Certification</p>
+        </div>
+<!-- About Section -->
+  <section id="about" class="py-16 px-8 bg-gray-900">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-cyan-400 mb-6">About Us</h2>
+      <p class="text-gray-300 text-lg leading-relaxed">The School of Tech Guardians is a modern learning platform that provides practical, hands-on training in cybersecurity, ethical hacking, networking, and information protection. We focus on *skill enhancement and knowledge sharing* — not on job placements, but on empowering learners to become experts in their domains.</p>
+    </div>
+  </section>
+          
+        <hr class="section-divider">
+
+        <!-- Courses Section -->
+  <section id="courses" class="py-16 bg-gray-800">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-cyan-400 mb-12">Our Courses</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
+          
+          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Cyber Security Fundamentals</h3>
+          <p class="text-gray-400">Understand cyber threats, protection techniques, and risk management.</p>
+        </div>
+        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
+          
+          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Ethical Hacking Masterclass</h3>
+          <p class="text-gray-400">Learn penetration testing, vulnerability assessment, and ethical hacking tools.</p>
+        </div>
+        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
+         
+          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Network Security and Defense</h3>
+          <p class="text-gray-400">Master network protocols, firewalls, and intrusion detection systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+        <section class="cyber-range-cta">
+            <h2
+                style="font-size: 2.5em; margin-bottom: 25px; color: var(--color-brand-secondary);">
+                <span class="neon">CYBER RANGE</span>: Real-World War Games 🎯
+            </h2>
+            <div class="glass"
+                style="max-width: 900px; margin: 20px auto; padding: 30px; border-radius: 12px;">
+                <p style="color: #ccc; margin-bottom: 20px; line-height: 1.6;">
+                    All courses include access to our dedicated, isolated
+                    *Cyber Cammando Range*. Practice exploiting and defending live
+                    systems in a safe, legal environment. This platform features
+                    constantly refreshed, vulnerable systems designed to mirror
+                    current enterprise networks—your ultimate training ground.
+                </p>
+                <div class="range-features">
+                    <span>⚡ Isolated Environments</span>
+                    <span>⚡ Capture The Flag Challenges</span>
+                    <span>⚡ 24/7 Access & Scoring</span>
+                </div>
+                <a href="https://tinyurl.com/urrangeishere" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Explore the Labs</a>
+            </div>
+        </section>
+<!-- Testimonials -->
+  <section class="py-16 bg-gray-900">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-cyan-400 mb-8">What Learners Say</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+          <p class="text-gray-300 italic mb-4">“Best platform to understand cybersecurity practically. The mentors are real professionals.”</p>
+          <h4 class="text-cyan-400 font-semibold">— Ankit Sharma</h4>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+          <p class="text-gray-300 italic mb-4">“Hands-on labs and practical exposure helped me build real-world confidence.”</p>
+          <h4 class="text-cyan-400 font-semibold">— Priya Mehta</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-gray-800">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-cyan-400 mb-6">Contact Us</h2>
+      <p class="text-gray-300 mb-6">Have questions or want to join a course? Reach out to us for details or demo sessions.</p>
+      <form class="grid grid-cols-1 gap-4 max-w-md mx-auto">
+        <input type="text" placeholder="Full Name" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
+        <input type="email" placeholder="Email Address" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
+        <textarea placeholder="Your Message" class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500"></textarea>
+        <button type="submit" class="bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-lg">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+        <hr class="section-divider">
+
+        <footer id="contact" class="bg-gradient-to-r from-cyan-900 via-indigo-900 to-purple-900 text-white py-10 px-6 text-center rounded-t-3xl shadow-inner">
+  <div class="max-w-5xl mx-auto space-y-4">
+    <h2 class="text-2xl font-extrabold tracking-wide text-cyan-300 drop-shadow-md">Contact Us</h2>
+    <p class="text-gray-200 text-sm">For enrollment details and program information</p>
+    
+    <div class="text-lg font-medium">
+      <p>Email: <a href="mailto:info@techguardians.in" class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">info@techguardians.in</a></p>
+      <p>Phone: <a href="tel:+917006473877" class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">+91 7006473877</a></p>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="flex justify-center space-x-6 mt-6">
+      <a href="https://youtube.com" target="_blank" title="YouTube" class="text-red-500 hover:scale-125 transform transition-all duration-300">
+        <i class="fab fa-youtube fa-2x"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" title="Instagram" class="text-pink-400 hover:scale-125 transform transition-all duration-300">
+        <i class="fab fa-instagram fa-2x"></i>
+      </a>
+      <a href="https://linkedin.com" target="_blank" title="LinkedIn" class="text-blue-400 hover:scale-125 transform transition-all duration-300">
+        <i class="fab fa-linkedin-in fa-2x"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" title="Twitter" class="text-sky-400 hover:scale-125 transform transition-all duration-300">
+        <i class="fab fa-twitter fa-2x"></i>
+      </a>
+    </div>
+
+    <p class="text-sm text-gray-400 mt-8 border-t border-gray-700 pt-4">
+      &copy; 2025 <span class="text-cyan-300 font-semibold">Tech Guardians</span>. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+
+        
+  <!-- JavaScript -->
+  <script>
+  (function(){
+    const carousel = document.getElementById('carousel');
+    const slides = carousel.querySelectorAll('.carousel-item');
+    const total = slides.length;
+    let index = 0;
+    let autoTimer = null;
+
+    function goTo(i){
+      index = ((i % total) + total) % total;
+      carousel.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    // exposed function used by the existing buttons (onclick attributes)
+    window.moveSlide = function(dir){
+      goTo(index + dir);
+      resetAuto();
+    }
+
+    function startAuto(){
+      if(autoTimer) return;
+      autoTimer = setInterval(()=> goTo(index + 1), 4000);
+    }
+    function stopAuto(){
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+    function resetAuto(){ stopAuto(); startAuto(); }
+
+    // pause on hover/focus for better UX
+    const wrapper = carousel.parentElement;
+    wrapper.addEventListener('mouseenter', stopAuto);
+    wrapper.addEventListener('mouseleave', startAuto);
+    wrapper.addEventListener('focusin', stopAuto);
+    wrapper.addEventListener('focusout', startAuto);
+
+    // keyboard support
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowLeft') { moveSlide(-1); }
+      if(e.key === 'ArrowRight') { moveSlide(1); }
+    });
+
+    // init
+    goTo(0);
+    startAuto();
+  })();
+  </script>
+
+    </body>
+</html>
