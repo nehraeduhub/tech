@@ -15,7 +15,7 @@
         :root { 
             --color-brand-primary: #00ff9d; /* Neon Green */
             --color-brand-secondary: #00bfff; /* Deep Sky Blue */
-            --color-bg: #020817; /* Very dark background */
+            --color-bg: #0a0e27; /* Deep Navy Blue instead of black */
             --color-ink: #e5e7eb; /* Light text */
             --color-card-bg: rgba(255, 255, 255, 0.05); /* Transparent white */
             --color-border-subtle: rgba(255, 255, 255, 0.1);
@@ -27,11 +27,35 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--color-bg);
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a4d 25%, #0d0f2d 50%, #1a0a2e 75%, #0a0e27 100%);
+            background-attachment: fixed;
+            background-size: 400% 400%;
             color: var(--color-ink);
             overflow-x: hidden;
             min-height: 100vh;
-            padding-top: var(--header-height); /* Offset for fixed header */
+            padding-top: var(--header-height);
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 157, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 191, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 0%, rgba(138, 43, 226, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         h1, h2, h3 { 
@@ -57,33 +81,52 @@
             box-shadow: 0 15px 40px rgba(0, 255, 157, 0.25), 0 0 15px rgba(0, 255, 157, 0.1);
         }
         
-        /* Animated background: Grid/lines */
+        /* Animated background: Grid/lines with cyber effect */
         .bg-animation {
             position: fixed;
             width: 100%;
             height: 100%;
             top: 0; left: 0;
-            background: repeating-linear-gradient(
-                90deg,
-                rgba(0,191,255,0.02) 0,
-                rgba(0,191,255,0.02) 1px,
-                transparent 1px,
-                transparent 50px
-            ),
-            repeating-linear-gradient(
-                0deg,
-                rgba(0,191,255,0.02) 0,
-                rgba(0,191,255,0.02) 1px,
-                transparent 1px,
-                transparent 50px
-            );
-            animation: moveLines 60s linear infinite;
-            z-index: 0;
-            opacity: 0.6;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0, 255, 157, 0.03) 0,
+                    rgba(0, 255, 157, 0.03) 1px,
+                    transparent 1px,
+                    transparent 50px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 191, 255, 0.03) 0,
+                    rgba(0, 191, 255, 0.03) 1px,
+                    transparent 1px,
+                    transparent 50px
+                );
+            animation: moveLines 120s linear infinite;
+            z-index: 1;
+            opacity: 0.4;
         }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 157, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(0, 191, 255, 0.12) 0%, transparent 30%),
+                radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.08) 0%, transparent 50%);
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+        
         @keyframes moveLines {
             from { background-position: 0 0; }
             to { background-position: 100px 100px; }
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
         }
 
         /* --- Fixed Header Navigation --- */
@@ -93,13 +136,14 @@
             left: 0;
             width: 100%;
             height: var(--header-height);
-            background: rgba(2, 8, 23, 0.95); /* Semi-transparent dark bg */
+            background: linear-gradient(90deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 26, 77, 0.92) 100%);
             border-bottom: 2px solid var(--color-border-subtle);
             z-index: 999;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 40px;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1);
         }
         .logo-container {
             display: flex;
@@ -169,8 +213,10 @@
             z-index: 1;
             text-align: center;
             padding: 25px 20px; 
-            background: linear-gradient(90deg, rgba(0, 255, 157, 0.1) 0%, rgba(0, 191, 255, 0.1) 100%); 
+            background: linear-gradient(90deg, rgba(0, 255, 157, 0.12) 0%, rgba(0, 191, 255, 0.12) 50%, rgba(138, 43, 226, 0.08) 100%);
             border-bottom: 2px solid var(--color-brand-primary);
+            border-top: 2px solid var(--color-brand-secondary);
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         /* --- Sections Layout --- */
@@ -254,6 +300,7 @@
     </style>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
+    
     <body>
         <div class="bg-animation"></div>
 
@@ -376,6 +423,22 @@
             <p>100% Live Labs | Expert Mentors | Industry-Recognized
                 Certification</p>
         </div>
+
+<!-- FREE LIVE CLASSES BANNER -->
+<div class="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-6 px-8 text-center shadow-2xl border-b-4 border-green-300 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute inset-0" style="background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);"></div>
+  </div>
+  <div class="relative z-10">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-2 animate-pulse">🎓 FREE LIVE CLASSES 🎓</h2>
+    <p class="text-lg md:text-xl font-semibold mb-2">Learn Advanced Cybersecurity & IT Infrastructure</p>
+    <p class="text-base md:text-lg mb-4">Join our interactive Google Meet sessions for FREE! Get hands-on training from industry experts.</p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <p class="text-base font-bold bg-black/30 px-6 py-2 rounded-full">📅 Schedule: Check WhatsApp for updates</p>
+      <a href="https://wa.me/917006473877" target="_blank" class="bg-white text-green-600 font-extrabold px-8 py-3 rounded-full text-lg hover:bg-green-50 hover:scale-105 transition transform duration-300 shadow-lg">📲 Enroll Now on WhatsApp</a>
+    </div>
+  </div>
+</div>
 <!-- About Section -->
   <section id="about" class="py-16 px-8 bg-gray-900">
     <div class="max-w-5xl mx-auto text-center">
@@ -391,20 +454,35 @@
     <div class="max-w-6xl mx-auto text-center">
       <h2 class="text-4xl font-bold text-cyan-400 mb-12">Our Courses</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
-          
-          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Cyber Security Fundamentals</h3>
-          <p class="text-gray-400">Understand cyber threats, protection techniques, and risk management.</p>
+        <div class="bg-gradient-to-br from-cyan-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-cyan-500/60 hover:scale-105 transition transform duration-300 border border-cyan-500/30">
+          <div class="mb-4 text-3xl">🔐</div>
+          <h3 class="text-2xl font-bold text-cyan-300 mb-3">Cyber Security Fundamentals</h3>
+          <p class="text-gray-300 leading-relaxed">Understand cyber threats, protection techniques, and risk management strategies for enterprise security.</p>
         </div>
-        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
-          
-          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Ethical Hacking Masterclass</h3>
-          <p class="text-gray-400">Learn penetration testing, vulnerability assessment, and ethical hacking tools.</p>
+        <div class="bg-gradient-to-br from-indigo-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-indigo-500/60 hover:scale-105 transition transform duration-300 border border-indigo-500/30">
+          <div class="mb-4 text-3xl">⚔️</div>
+          <h3 class="text-2xl font-bold text-indigo-300 mb-3">Ethical Hacking Masterclass</h3>
+          <p class="text-gray-300 leading-relaxed">Learn penetration testing, vulnerability assessment, and ethical hacking tools with hands-on labs.</p>
         </div>
-        <div class="bg-gray-900 p-6 rounded-xl shadow-lg hover:shadow-cyan-500/40 transition">
-         
-          <h3 class="text-2xl font-semibold text-cyan-300 mb-2">Network Security and Defense</h3>
-          <p class="text-gray-400">Master network protocols, firewalls, and intrusion detection systems.</p>
+        <div class="bg-gradient-to-br from-purple-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-purple-500/60 hover:scale-105 transition transform duration-300 border border-purple-500/30">
+          <div class="mb-4 text-3xl">🌐</div>
+          <h3 class="text-2xl font-bold text-purple-300 mb-3">Network Security and Defense</h3>
+          <p class="text-gray-300 leading-relaxed">Master network protocols, firewalls, and intrusion detection systems for enterprise networks.</p>
+        </div>
+        <div class="bg-gradient-to-br from-orange-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-orange-500/60 hover:scale-105 transition transform duration-300 border border-orange-500/30">
+          <div class="mb-4 text-3xl">🖥️</div>
+          <h3 class="text-2xl font-bold text-orange-300 mb-3">Data Centre Management</h3>
+          <p class="text-gray-300 leading-relaxed">Learn infrastructure planning, server management, and data center security best practices.</p>
+        </div>
+        <div class="bg-gradient-to-br from-pink-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-pink-500/60 hover:scale-105 transition transform duration-300 border border-pink-500/30">
+          <div class="mb-4 text-3xl">🔍</div>
+          <h3 class="text-2xl font-bold text-pink-300 mb-3">Cyber Forensics & Incident Response</h3>
+          <p class="text-gray-300 leading-relaxed">Investigate cyberattacks, collect digital evidence, and respond to security incidents professionally.</p>
+        </div>
+        <div class="bg-gradient-to-br from-red-900 to-gray-900 p-8 rounded-xl shadow-lg hover:shadow-red-500/60 hover:scale-105 transition transform duration-300 border border-red-500/30">
+          <div class="mb-4 text-3xl">👤</div>
+          <h3 class="text-2xl font-bold text-red-300 mb-3">Learn Active Directory</h3>
+          <p class="text-gray-300 leading-relaxed">Master user management, group policies, domain control, and enterprise directory services administration.</p>
         </div>
       </div>
     </div>
@@ -428,7 +506,10 @@
                     <span>⚡ Capture The Flag Challenges</span>
                     <span>⚡ 24/7 Access & Scoring</span>
                 </div>
-                <a href="https://tinyurl.com/urrangeishere" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Explore the Labs</a>
+            </div>
+            <div class="text-center mt-8 p-8 bg-gradient-to-r from-yellow-600 to-red-600 rounded-lg border-2 border-yellow-400">
+                <h3 class="text-3xl font-bold text-white mb-2">🚀 Cyber Range Coming Soon!</h3>
+                <p class="text-gray-100 text-lg">Our advanced cyber training environment is launching soon. Stay tuned for hands-on, real-world penetration testing scenarios!</p>
             </div>
         </section>
 <!-- Testimonials -->
@@ -437,87 +518,43 @@
       <h2 class="text-4xl font-bold text-cyan-400 mb-8">What Learners Say</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-gray-800 p-6 rounded-xl shadow-md">
-          <p class="text-gray-300 italic mb-4">“Best platform to understand cybersecurity practically. The mentors are real professionals.”</p>
+          <p class="text-gray-300 italic mb-4">"Best platform to understand cybersecurity practically. The mentors are real professionals."</p>
           <h4 class="text-cyan-400 font-semibold">— Ankit Sharma</h4>
         </div>
         <div class="bg-gray-800 p-6 rounded-xl shadow-md">
-          <p class="text-gray-300 italic mb-4">“Hands-on labs and practical exposure helped me build real-world confidence.”</p>
+          <p class="text-gray-300 italic mb-4">"Hands-on labs and practical exposure helped me build real-world confidence."</p>
           <h4 class="text-cyan-400 font-semibold">— Priya Mehta</h4>
         </div>
       </div>
     </div>
   </section>
 
-<!-- Contact Section -->
-<section id="contact" class="py-16 bg-gray-800">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-4xl font-bold text-cyan-400 mb-6">Contact Us</h2>
-    <p class="text-gray-300 mb-6">Have questions or want to join a course? Reach out to us for details or demo sessions.</p>
-
-    <form id="whatsappForm" class="grid grid-cols-1 gap-4 max-w-md mx-auto">
-      <input id="name" type="text" placeholder="Full Name"
-        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
-
-      <input id="email" type="email" placeholder="Email Address"
-        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500">
-
-      <textarea id="message" placeholder="Your Message"
-        class="p-3 rounded bg-gray-900 border border-gray-700 focus:border-cyan-500"></textarea>
-
-      <button type="submit"
-        class="bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-lg">
-        Send Message on WhatsApp
-      </button>
-    </form>
+<!-- Missed Batch Section -->
+<section class="py-18 pb-20 text-center bg-gray-800">
+  <h2 class="text-3xl font-bold neon mb-2">Missed the batch? Request a late seat</h2>
+  <p class="text-gray-400 mb-6">Contact us with your registration info and we will review late entry requests manually.</p>
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+    <a id="ctaEnrollBottom" href="/contact.php" class="bg-cyan-400 text-black font-semibold px-8 py-4 rounded-md text-lg hover:bg-cyan-300 transition">Request Late Entry</a>
+    <a id="ctaWhatsAppBottom" href="https://wa.me/917006473877" class="border border-cyan-400 text-cyan-400 font-semibold px-8 py-4 rounded-md text-lg hover:bg-cyan-400 hover:text-black transition" target="_blank">Message on WhatsApp</a>
   </div>
 </section>
 
 <hr class="section-divider">
 
 <!-- Footer -->
-<footer class="bg-gradient-to-r from-cyan-900 via-indigo-900 to-purple-900 text-white py-10 px-6 text-center rounded-t-3xl shadow-inner">
-  <div class="max-w-5xl mx-auto space-y-4">
-    <h2 class="text-2xl font-extrabold tracking-wide text-cyan-300 drop-shadow-md">Contact Us</h2>
-    <p class="text-gray-200 text-sm">For enrollment details and program information</p>
-
-    <div class="text-lg font-medium">
-      <p>Email:
-        <a href="mailto:info@techguardians.in"
-          class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">
-          info@techguardians.in
-        </a>
-      </p>
-      <p>Phone:
-        <a href="tel:+917006473877"
-          class="text-cyan-300 hover:text-cyan-400 transition-colors duration-300">
-          +91 7006473877
-        </a>
-      </p>
-    </div>
+<footer class="bg-gradient-to-r from-cyan-900 via-indigo-900 to-purple-900 text-white py-6 px-6 text-center">
+  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium">
+    <p>Email: <a href="mailto:info@techguardians.in" class="text-cyan-300 hover:text-cyan-400">info@techguardians.in</a></p>
+    <span class="hidden sm:inline">•</span>
+    <p>Phone: <a href="tel:+917006473877" class="text-cyan-300 hover:text-cyan-400">+91 7006473877</a></p>
+    <span class="hidden sm:inline">•</span>
+    <p>&copy; 2025 <span class="text-cyan-300 font-semibold">Tech Guardians</span> - Guardians of the Digital World</p>
   </div>
 </footer>
 
 <!-- WhatsApp JS -->
 <script>
-document.getElementById("whatsappForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let message = document.getElementById("message").value;
-
-  let whatsappMessage =
-    "New Contact Form Submission:%0A%0A" +
-    "Name: " + name + "%0A" +
-    "Email: " + email + "%0A" +
-    "Message: " + message;
-
-  let phoneNumber = "917006473877"; // Your WhatsApp number
-
-  let url = "https://wa.me/" + phoneNumber + "?text=" + whatsappMessage;
-
-  window.open(url, "_blank");
-});
+// Form removed - contact through WhatsApp directly
 </script>
 
 
