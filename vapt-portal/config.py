@@ -53,3 +53,25 @@ REPORT_STANDARDS = [
 DEFAULT_HTTP_TIMEOUT = 15
 DEFAULT_ENABLE_ACTIVE_TOOLS = True   # active external tools if installed
 DEFAULT_PORT_SCAN = True             # built-in TCP connect scan
+
+# ---------------------------------------------------------------------------
+# Access control & licensing
+# ---------------------------------------------------------------------------
+# 1) PORTAL LOGIN -----------------------------------------------------------
+# Require a password to open the portal. Leave the hash empty to disable login.
+# Generate a hash with:  python -c "import hashlib;print(hashlib.sha256(b'YOURPASS').hexdigest())"
+LOGIN_REQUIRED = False
+LOGIN_USERNAME = "admin"
+LOGIN_PASSWORD_HASH = ""   # sha256 hex of your password (see command above)
+# Session signing secret. Set a long random value in production; falls back to
+# a per-start random key (logs everyone out on restart) if left blank.
+SESSION_SECRET = ""
+
+# 2) MACHINE-LOCKED LICENSE -------------------------------------------------
+# When True, the portal refuses to start without a valid, signed, machine-bound
+# license file. Set up keys with license_tool.py first (see SECURITY.md).
+LICENSE_ENFORCE = False
+LICENSE_FILE = "license.key"
+# Paste the PUBLIC key printed by `python license_tool.py genkeys` here.
+# The matching PRIVATE key stays with you and is NEVER shipped.
+LICENSE_PUBLIC_KEY = ""

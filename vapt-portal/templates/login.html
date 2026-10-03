@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="tg-card tg-login">
+  <h1>Sign in</h1>
+  <p class="tg-lead">This portal is access-controlled. Enter your credentials to
+     continue.</p>
+
+  {% if error %}<div class="tg-error">{{ error }}</div>{% endif %}
+
+  <form method="post" action="{{ url_for('login') }}" class="tg-form">
+    <label>Username
+      <input type="text" name="username" autofocus required>
+    </label>
+    <label>Password
+      <input type="password" name="password" required>
+    </label>
+    <button type="submit" class="tg-btn">Sign in</button>
+  </form>
+</section>
+{% endblock %}

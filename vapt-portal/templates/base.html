@@ -15,7 +15,12 @@
         <div class="tg-tag">{{ BRAND_TAGLINE }}</div>
       </div>
     </div>
-    <div class="tg-badge">AUTHORISED USE ONLY</div>
+    <div class="tg-headright">
+      <div class="tg-badge">AUTHORISED USE ONLY</div>
+      {% if LOGIN_REQUIRED and AUTHED %}
+        <a class="tg-logout" href="{{ url_for('logout') }}">Log out</a>
+      {% endif %}
+    </div>
   </header>
   <main class="tg-main">
     {% block content %}{% endblock %}

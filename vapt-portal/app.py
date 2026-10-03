@@ -1,38 +1,56 @@
 #!/usr/bin/env python3
-"""Tech Guardians VAPT Portal.
+"""RJHex VAPT Portal.
 
 A fully portable, database-free web portal. Launch it, open the browser, confirm
-authorisation, enter a target, and it runs non-intrusive assessment checks and
-produces a branded PDF report.
+authorisation, enter a target, and it runs assessment checks and produces a
+branded PDF report.
 
 Design goals:
   * Portable  - pure Python, no DB, state kept in memory + files on disk.
   * Safe      - requires explicit authorisation before any scan runs.
-  * Offline   - works from a USB stick; external scanners used only if present.
+  * Guarded   - optional login + machine-locked license (see config.py).
 """
 from __future__ import annotations
 
+import functools
+import hashlib
 import json
 import os
+import secrets
+import sys
 import threading
 import uuid
 from datetime import datetime
 
 from flask import (
     Flask, render_template, request, redirect, url_for, jsonify,
-    send_file, abort,
+    send_file, abort, session, flash,
 )
 
 import config
 from scanner.engine import run_scan, normalize_target
 from scanner.checks.external_tools import available_tools
 from report.pdf_generator import build_report
+from security import licensing
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORT_DIR = os.path.join(BASE_DIR, "reports")
 os.makedirs(REPORT_DIR, exist_ok=True)
 
+# --- License enforcement (runs for every entry path, not just __main__) ---
+LICENSE_INFO = None
+try:
+    LICENSE_INFO = licensing.enforce(config)
+except licensing.LicenseError as exc:
+    sys.stderr.write("\n" + "=" * 60 + "\n")
+    sys.stderr.write(f"  {config.BRAND_NAME}: LICENSE CHECK FAILED\n")
+    sys.stderr.write("=" * 60 + "\n")
+    sys.stderr.write(str(exc) + "\n")
+    sys.stderr.write("=" * 60 + "\n")
+    sys.exit(2)
+
 app = Flask(__name__)
+app.secret_key = config.SESSION_SECRET or secrets.token_hex(32)
 
 
 @app.context_processor
@@ -44,12 +62,57 @@ def inject_brand():
         "AUTHOR_MARK": config.AUTHOR_MARK,
         "COLOR_PRIMARY": config.COLOR_PRIMARY,
         "COLOR_ACCENT": config.COLOR_ACCENT,
+        "LOGIN_REQUIRED": config.LOGIN_REQUIRED,
+        "AUTHED": _authed(),
     }
 
 # In-memory job registry (no database -- fully portable).
 # job_id -> {status, target, result, pdf, error, client, assessor, ref}
 JOBS: dict[str, dict] = {}
 JOBS_LOCK = threading.Lock()
+
+
+# --------------------------------------------------------------------------- #
+# Authentication
+# --------------------------------------------------------------------------- #
+def _authed() -> bool:
+    return (not config.LOGIN_REQUIRED) or session.get("authed") is True
+
+
+@app.before_request
+def _require_login():
+    if not config.LOGIN_REQUIRED:
+        return
+    allowed = {"login", "static"}
+    if request.endpoint in allowed or session.get("authed"):
+        return
+    return redirect(url_for("login", next=request.path))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if not config.LOGIN_REQUIRED:
+        return redirect(url_for("index"))
+    error = None
+    if request.method == "POST":
+        user = (request.form.get("username") or "").strip()
+        pw = request.form.get("password") or ""
+        pw_hash = hashlib.sha256(pw.encode("utf-8")).hexdigest()
+        ok_user = secrets.compare_digest(user, config.LOGIN_USERNAME)
+        ok_pw = bool(config.LOGIN_PASSWORD_HASH) and secrets.compare_digest(
+            pw_hash, config.LOGIN_PASSWORD_HASH)
+        if ok_user and ok_pw:
+            session["authed"] = True
+            nxt = request.args.get("next") or url_for("index")
+            return redirect(nxt)
+        error = "Invalid username or password."
+    return render_template("login.html", error=error)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 def _run_job(job_id: str) -> None:
@@ -191,6 +254,15 @@ if __name__ == "__main__":
     print("=" * 60)
     print(f"  Portal:  {url}")
     print("  Reports saved to: ./reports/")
+    guard = []
+    if config.LOGIN_REQUIRED:
+        guard.append("login")
+    if config.LICENSE_ENFORCE:
+        guard.append("machine-locked license")
+    print("  Protection: " + (", ".join(guard) if guard else "none (open)"))
+    if LICENSE_INFO:
+        print(f"  Licensed to: {LICENSE_INFO.get('licensee')} "
+              f"(expires {LICENSE_INFO.get('expires')})")
     print("  Press Ctrl+C to stop.")
     print("=" * 60)
     try:

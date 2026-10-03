@@ -6,3 +6,9 @@ __pycache__/
 # Generated reports (keep the folder, not its contents)
 reports/*
 !reports/.gitkeep
+
+# Secrets & licenses — never commit these
+rjhex_private.key
+*_private.key
+license.key
+*.license
