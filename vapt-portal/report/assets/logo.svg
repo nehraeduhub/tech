@@ -1,14 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
-  <!-- Shield (solid fill so it renders in both the browser and the PDF) -->
-  <path d="M120 16 L212 52 V120 C212 176 170 210 120 226 C70 210 28 176 28 120 V52 Z"
-        fill="#0b3c82" stroke="#0a2d63" stroke-width="4"/>
-  <!-- Inner shield outline -->
-  <path d="M120 40 L190 68 V120 C190 164 158 192 120 205 C82 192 50 164 50 120 V68 Z"
-        fill="#1e6fd9" stroke="#9fc6ff" stroke-width="3"/>
-  <!-- Keyhole (guardian of access) -->
-  <circle cx="120" cy="104" r="26" fill="#ffffff"/>
-  <rect x="110" y="120" width="20" height="46" rx="6" fill="#ffffff"/>
-  <!-- Checkmark -->
-  <path d="M96 150 l16 16 l34 -40" fill="none" stroke="#0b3c82"
-        stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Hexagon (the "Hex" in RJHex). Solid fills so it renders in the PDF too. -->
+  <polygon points="120,14 210,66 210,174 120,226 30,174 30,66"
+           fill="#0a1f44" stroke="#e63946" stroke-width="6"/>
+  <polygon points="120,40 188,79 188,161 120,200 52,161 52,79"
+           fill="none" stroke="#2a9d8f" stroke-width="2.5" opacity="0.8"/>
+  <!-- RJ monogram -->
+  <text x="120" y="150" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
+        font-size="86" font-weight="700" fill="#ffffff">RJ</text>
+  <!-- Hex accent dots -->
+  <circle cx="120" cy="30" r="5" fill="#e63946"/>
+  <circle cx="120" cy="210" r="5" fill="#e63946"/>
 </svg>

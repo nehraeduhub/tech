@@ -1,5 +1,5 @@
 :root{
-  --primary:#0b3c82; --accent:#1e6fd9; --light:#eaf2ff; --ink:#1b2430;
+  --primary:#0a1f44; --accent:#e63946; --light:#eef2f9; --ink:#16202e;
   --crit:#b00020; --high:#e2571e; --med:#e0a800; --low:#2a9d8f; --info:#5a6470;
 }
 *{box-sizing:border-box}
@@ -69,4 +69,5 @@ h2{color:var(--accent);margin-top:28px}
   font-size:12px;overflow:auto;white-space:pre-wrap}
 .attack{color:#b00020} .rec{color:#1b7a46}
 .tg-footer{text-align:center;color:#8896ab;font-size:12px;padding:24px}
+.tg-author{margin-top:6px;font-weight:700;color:var(--primary);letter-spacing:.3px}
 @media(max-width:640px){.tg-grid,.tg-counts{grid-template-columns:1fr 1fr}}

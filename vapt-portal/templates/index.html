@@ -3,16 +3,17 @@
 <section class="tg-card">
   <h1>New Assessment</h1>
   <p class="tg-lead">Enter a target you are <strong>authorised</strong> to test.
-     The portal runs non-intrusive checks and produces a branded PDF report.</p>
+     The portal runs a wide set of non-intrusive checks (plus installed Kali /
+     open-source tools) and produces a detailed, branded PDF report.</p>
 
   {% if error %}<div class="tg-error">{{ error }}</div>{% endif %}
 
   <div class="tg-tools">
     <span>Detected scanners on this machine:</span>
+    <span class="chip on">built-in checks ✓</span>
     {% for name, ok in tools.items() %}
       <span class="chip {{ 'on' if ok else 'off' }}">{{ name }} {{ '✓' if ok else '—' }}</span>
     {% endfor %}
-    <span class="chip on">built-in checks ✓</span>
   </div>
 
   <form method="post" action="{{ url_for('scan') }}" class="tg-form">
@@ -28,13 +29,21 @@
         <input type="text" name="assessor" placeholder="Your name / team">
       </label>
       <label>Engagement Ref.
-        <input type="text" name="ref" placeholder="TG-2026-001">
+        <input type="text" name="ref" placeholder="auto">
       </label>
     </div>
 
     <label class="tg-check">
       <input type="checkbox" name="use_external" checked>
-      Use installed open-source scanners (nmap / nikto / testssl.sh) if available
+      Use installed open-source / Kali tools (nmap, nikto, nuclei, testssl.sh…) if available
+    </label>
+    <label class="tg-check">
+      <input type="checkbox" name="port_scan" checked>
+      Run built-in TCP port scan
+    </label>
+    <label class="tg-check">
+      <input type="checkbox" name="active_tools" checked>
+      Allow <strong>active</strong> tools (nuclei, wpscan, dir brute-force) — more thorough, more intrusive
     </label>
 
     <div class="tg-authbox">

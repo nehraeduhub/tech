@@ -23,6 +23,7 @@ from flask import (
     send_file, abort,
 )
 
+import config
 from scanner.engine import run_scan, normalize_target
 from scanner.checks.external_tools import available_tools
 from report.pdf_generator import build_report
@@ -32,6 +33,18 @@ REPORT_DIR = os.path.join(BASE_DIR, "reports")
 os.makedirs(REPORT_DIR, exist_ok=True)
 
 app = Flask(__name__)
+
+
+@app.context_processor
+def inject_brand():
+    """Make branding available to every template."""
+    return {
+        "BRAND_NAME": config.BRAND_NAME,
+        "BRAND_TAGLINE": config.BRAND_TAGLINE,
+        "AUTHOR_MARK": config.AUTHOR_MARK,
+        "COLOR_PRIMARY": config.COLOR_PRIMARY,
+        "COLOR_ACCENT": config.COLOR_ACCENT,
+    }
 
 # In-memory job registry (no database -- fully portable).
 # job_id -> {status, target, result, pdf, error, client, assessor, ref}
@@ -46,6 +59,8 @@ def _run_job(job_id: str) -> None:
         result = run_scan(
             job["target"],
             use_external_tools=job.get("use_external", True),
+            enable_active_tools=job.get("active_tools", True),
+            port_scan=job.get("port_scan", True),
         )
         rd = result.to_dict()
         job["result"] = rd
@@ -54,7 +69,7 @@ def _run_job(job_id: str) -> None:
         stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         safe = "".join(c if c.isalnum() else "_"
                        for c in result.normalized_url)[:40]
-        base = f"TechGuardians_VAPT_{safe}_{stamp}"
+        base = f"{config.BRAND_NAME}_VAPT_{safe}_{stamp}"
         json_path = os.path.join(REPORT_DIR, base + ".json")
         pdf_path = os.path.join(REPORT_DIR, base + ".pdf")
         with open(json_path, "w", encoding="utf-8") as fh:
@@ -101,6 +116,8 @@ def scan():
             "assessor": (request.form.get("assessor") or "").strip(),
             "ref": (request.form.get("ref") or "").strip(),
             "use_external": request.form.get("use_external") == "on",
+            "active_tools": request.form.get("active_tools") == "on",
+            "port_scan": request.form.get("port_scan") == "on",
             "created": datetime.now().isoformat(),
         }
     threading.Thread(target=_run_job, args=(job_id,), daemon=True).start()
@@ -167,14 +184,15 @@ if __name__ == "__main__":
     host = os.environ.get("TG_HOST", "127.0.0.1")
     port = int(os.environ.get("TG_PORT", "5000"))
     url = f"http://{host}:{port}/"
-    print("=" * 56)
-    print("  Tech Guardians VAPT Portal")
-    print("  Vulnerability Assessment & Penetration Testing")
-    print("=" * 56)
+    print("=" * 60)
+    print(f"  {config.BRAND_NAME} VAPT Portal")
+    print(f"  {config.BRAND_TAGLINE}")
+    print(f"  {config.AUTHOR_MARK}")
+    print("=" * 60)
     print(f"  Portal:  {url}")
     print("  Reports saved to: ./reports/")
     print("  Press Ctrl+C to stop.")
-    print("=" * 56)
+    print("=" * 60)
     try:
         if os.environ.get("TG_NO_BROWSER") != "1":
             threading.Timer(1.2, lambda: webbrowser.open(url)).start()

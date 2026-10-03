@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Tech Guardians VAPT Portal{% endblock %}</title>
+  <title>{% block title %}{{ BRAND_NAME }} VAPT Portal{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header class="tg-header">
     <div class="tg-brand">
-      <img src="{{ url_for('static', filename='logo.svg') }}" alt="Tech Guardians" class="tg-logo">
+      <img src="{{ url_for('static', filename='logo.svg') }}" alt="{{ BRAND_NAME }}" class="tg-logo">
       <div>
-        <div class="tg-name">Tech Guardians</div>
-        <div class="tg-tag">Vulnerability Assessment &amp; Penetration Testing</div>
+        <div class="tg-name">{{ BRAND_NAME }}</div>
+        <div class="tg-tag">{{ BRAND_TAGLINE }}</div>
       </div>
     </div>
     <div class="tg-badge">AUTHORISED USE ONLY</div>
@@ -21,7 +21,8 @@
     {% block content %}{% endblock %}
   </main>
   <footer class="tg-footer">
-    Tech Guardians VAPT Portal · Portable edition · For authorised security testing only.
+    {{ BRAND_NAME }} VAPT Portal · Portable edition · For authorised security testing only.
+    <div class="tg-author">{{ AUTHOR_MARK }}</div>
   </footer>
 </body>
 </html>

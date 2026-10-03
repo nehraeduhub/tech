@@ -1,8 +1,9 @@
 """Scan orchestration.
 
-The engine normalises the target, runs each non-intrusive check, and returns a
-ScanResult. It is deliberately conservative: it assesses configuration and
-exposure rather than attempting exploitation.
+The engine normalises the target, runs each check, and returns a ScanResult.
+Built-in checks are non-intrusive. External Kali/open-source tools are run only
+if installed, and the active (intrusive) ones only when the operator enables
+active scanning for an authorised engagement.
 """
 from __future__ import annotations
 
@@ -10,8 +11,12 @@ import re
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
+import config
 from .models import ScanResult
-from .checks import http_security, tls, exposure, dns_info, external_tools
+from .checks import (
+    http_security, tls, exposure, email_dns, cors, content, ports, waf,
+    external_tools,
+)
 
 _HOST_RE = re.compile(r"^[a-zA-Z0-9.\-:]+$")
 
@@ -33,19 +38,26 @@ def run_scan(
     raw_target: str,
     *,
     use_external_tools: bool = True,
+    enable_active_tools: bool = True,
+    port_scan: bool = True,
     deep_dns: bool = True,
 ) -> ScanResult:
     url = normalize_target(raw_target)
+    timeout = config.DEFAULT_HTTP_TIMEOUT
     result = ScanResult(target=raw_target, normalized_url=url)
     result.started_at = datetime.now(timezone.utc).isoformat()
     result.log(f"Assessment started against {url}")
 
     # Pure-Python, always-available checks.
-    for name, fn in (
-        ("HTTP security", lambda: http_security.run(url, result)),
-        ("TLS", lambda: tls.run(url, result)),
-        ("Exposure", lambda: exposure.run(url, result)),
-    ):
+    builtins = [
+        ("HTTP security", lambda: http_security.run(url, result, timeout)),
+        ("TLS", lambda: tls.run(url, result, timeout)),
+        ("Security headers CORS", lambda: cors.run(url, result, timeout)),
+        ("Content analysis", lambda: content.run(url, result, timeout)),
+        ("Exposure", lambda: exposure.run(url, result, timeout)),
+        ("WAF detection", lambda: waf.run(url, result, timeout)),
+    ]
+    for name, fn in builtins:
         try:
             fn()
         except Exception as exc:  # noqa: BLE001
@@ -53,14 +65,20 @@ def run_scan(
 
     if deep_dns:
         try:
-            dns_info.run(url, result)
+            email_dns.run(url, result)
         except Exception as exc:  # noqa: BLE001
             result.errors.append(f"DNS check error: {exc}")
 
-    # Optional external scanners (only if installed on the host).
+    if port_scan:
+        try:
+            ports.run(url, result)
+        except Exception as exc:  # noqa: BLE001
+            result.errors.append(f"Port scan error: {exc}")
+
+    # External scanners (only those installed; active ones gated).
     if use_external_tools:
         try:
-            external_tools.run(url, result)
+            external_tools.run(url, result, enable_active=enable_active_tools)
         except Exception as exc:  # noqa: BLE001
             result.errors.append(f"External tool error: {exc}")
 
@@ -70,6 +88,6 @@ def run_scan(
     result.finished_at = datetime.now(timezone.utc).isoformat()
     result.log(
         f"Assessment complete: {len(result.findings)} finding(s), "
-        f"risk rating {result.risk_rating()}"
+        f"risk rating {result.risk_rating()}, grade {result.security_grade()}"
     )
     return result

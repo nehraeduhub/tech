@@ -15,7 +15,8 @@
 
   <div class="tg-riskbar rating-{{ result.risk_rating|lower }}">
     Overall risk: <strong>{{ result.risk_rating }}</strong>
-    (score {{ result.risk_score }}/100)
+    (score {{ result.risk_score }}/100) · Security grade
+    <strong>{{ result.security_grade }}</strong>
   </div>
 
   <div class="tg-counts">
