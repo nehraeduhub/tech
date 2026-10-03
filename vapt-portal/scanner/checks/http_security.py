@@ -9,7 +9,7 @@ import requests
 
 from ..models import Finding
 
-UA = "RJHex-VAPT/2.0 (authorised security assessment)"
+UA = "Tech Guardians-VAPT/2.0 (authorised security assessment)"
 
 # Headers we expect a well-hardened site to send, with the risk when missing.
 SECURITY_HEADERS = {

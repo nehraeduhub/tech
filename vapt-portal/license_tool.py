@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""RJHex license management CLI (owner tool).
+"""Tech Guardians license management CLI (owner tool).
 
 Workflow
 --------
@@ -78,7 +78,7 @@ def cmd_verify(args):
 
 
 def main():
-    p = argparse.ArgumentParser(description="RJHex license management (owner tool)")
+    p = argparse.ArgumentParser(description="Tech Guardians license management (owner tool)")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     g = sub.add_parser("genkeys", help="generate a signing keypair")

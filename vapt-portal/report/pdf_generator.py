@@ -1,4 +1,4 @@
-"""RJHex branded, professional VAPT PDF report generator (pure reportlab)."""
+"""Tech Guardians branded, professional VAPT PDF report generator (pure reportlab)."""
 from __future__ import annotations
 
 import os

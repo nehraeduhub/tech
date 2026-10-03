@@ -1,4 +1,4 @@
-# RJHex — Portable VAPT Portal
+# Tech Guardians — Portable VAPT Portal
 
 **Designed & Developed by Rajesh Nehra · Master in Cyber Security**
 
@@ -6,7 +6,7 @@ A **portable, database-free** Vulnerability Assessment & Penetration Testing
 portal. Copy it to a USB stick, run one script on any machine with Python 3, and
 a browser portal opens. Enter a target you are **authorised** to test and it runs
 a wide battery of checks — built-in Python checks plus any installed Kali /
-open-source tools — and generates a **detailed, professional, RJHex-branded PDF
+open-source tools — and generates a **detailed, professional, Tech Guardians-branded PDF
 report**.
 
 > ⚠️ **Authorised use only.** Only scan systems you own or have **written

@@ -1,4 +1,4 @@
-"""Machine-locked licensing for the RJHex VAPT Portal.
+"""Machine-locked licensing for the Tech Guardians VAPT Portal.
 
 Design
 ------

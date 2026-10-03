@@ -1,4 +1,4 @@
-# RJHex VAPT — External Tool Installation Guide
+# Tech Guardians VAPT — External Tool Installation Guide
 
 The portal **auto-detects** these tools and uses whichever are present. None are
 required (built-in Python checks always run), but installing them makes the

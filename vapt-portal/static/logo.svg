@@ -1,13 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
-  <!-- Hexagon (the "Hex" in RJHex). Solid fills so it renders in the PDF too. -->
-  <polygon points="120,14 210,66 210,174 120,226 30,174 30,66"
-           fill="#0a1f44" stroke="#e63946" stroke-width="6"/>
-  <polygon points="120,40 188,79 188,161 120,200 52,161 52,79"
-           fill="none" stroke="#2a9d8f" stroke-width="2.5" opacity="0.8"/>
-  <!-- RJ monogram -->
-  <text x="120" y="150" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
-        font-size="86" font-weight="700" fill="#ffffff">RJ</text>
-  <!-- Hex accent dots -->
-  <circle cx="120" cy="30" r="5" fill="#e63946"/>
-  <circle cx="120" cy="210" r="5" fill="#e63946"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <!-- Tech Guardians shield. Solid fills only (PDF-safe). -->
+  <path d="M120,58 L200,74 L200,150 C200,208 168,244 120,270
+           C72,244 40,208 40,150 L40,74 Z"
+        fill="#123E6B"/>
+
+  <!-- Green G (ring built from green disc + navy inner + navy opening) -->
+  <circle cx="122" cy="196" r="48" fill="#1E9E4F"/>
+  <circle cx="122" cy="196" r="27" fill="#123E6B"/>
+  <rect x="122" y="184" width="68" height="24" fill="#123E6B"/>
+  <!-- G crossbar + hook -->
+  <rect x="148" y="193" width="32" height="13" fill="#1E9E4F"/>
+  <rect x="167" y="193" width="13" height="23" fill="#1E9E4F"/>
+
+  <!-- Orange T on top (overlaps the G) -->
+  <rect x="74" y="92" width="96" height="22" fill="#F59E1E"/>
+  <rect x="112" y="112" width="20" height="66" fill="#F59E1E"/>
 </svg>

@@ -13,7 +13,7 @@ import requests
 
 from ..models import Finding
 
-UA = "RJHex-VAPT/2.0 (authorised security assessment)"
+UA = "Tech Guardians-VAPT/2.0 (authorised security assessment)"
 
 # Very small signature set of common libraries + a 'known old' heuristic.
 LIB_PATTERNS = {

@@ -1,4 +1,4 @@
-# RJHex — Securing & Licensing the Tool
+# Tech Guardians — Securing & Licensing the Tool
 
 This portal supports two independent protections so only people **you** authorise
 can run it:
@@ -12,7 +12,7 @@ Both are **off by default** so the tool works out of the box. Turn on whichever
 you want in `config.py`.
 
 > ### Honest limitation — read this
-> RJHex ships as Python **source code**. Client-side licensing deters casual
+> Tech Guardians ships as Python **source code**. Client-side licensing deters casual
 > copying and sharing, but anyone technical enough can open the files and remove
 > a check. There is no way around this for source-shipped software. For real
 > protection, **ship a compiled binary** (see *Packaging* below) and keep the
@@ -43,7 +43,7 @@ Stops anyone opening the portal without your password.
 
 ## 2. Machine-locked license (strong binding)
 
-A license is a signed file that says *"this licensee may run RJHex on this
+A license is a signed file that says *"this licensee may run Tech Guardians on this
 machine until this date"*. It uses **Ed25519** signatures: your **private key
 stays with you**; the app ships only the **public key** to verify. Nobody can
 forge a license without your private key.
@@ -100,7 +100,7 @@ harder to bypass.
 ```bash
 pip install pyinstaller
 cd vapt-portal
-pyinstaller --onefile --name RJHex \
+pyinstaller --onefile --name Tech Guardians \
   --add-data "templates:templates" \
   --add-data "static:static" \
   --add-data "report/assets:report/assets" \
@@ -108,7 +108,7 @@ pyinstaller --onefile --name RJHex \
 ```
 
 (On Windows use `;` instead of `:` in `--add-data`.) You get a single
-`dist/RJHex` (or `RJHex.exe`) that users run directly — no Python install
+`dist/Tech Guardians` (or `Tech Guardians.exe`) that users run directly — no Python install
 needed, and the source isn't sitting there to edit. Keep `LICENSE_ENFORCE=True`
 baked in before you build. For extra hardening, obfuscate first with a tool like
 `pyarmor`.

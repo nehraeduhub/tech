@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""RJHex VAPT Portal.
+"""Tech Guardians VAPT Portal.
 
 A fully portable, database-free web portal. Launch it, open the browser, confirm
 authorisation, enter a target, and it runs assessment checks and produces a

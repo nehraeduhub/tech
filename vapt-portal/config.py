@@ -1,4 +1,4 @@
-"""Central branding & report configuration for the RJHex VAPT Portal.
+"""Central branding & report configuration for the Tech Guardians VAPT Portal.
 
 Rebranding is a one-file job: change the values below (and replace the two
 logo files in static/logo.svg and report/assets/logo.svg) and the whole portal
@@ -12,9 +12,9 @@ from __future__ import annotations
 # ---------------------------------------------------------------------------
 # Brand identity  (edit these to rebrand)
 # ---------------------------------------------------------------------------
-BRAND_NAME = "RJHex"
+BRAND_NAME = "Tech Guardians"
 BRAND_TAGLINE = "Vulnerability Assessment & Penetration Testing"
-BRAND_SHORT = "RJHex Security"
+BRAND_SHORT = "Tech Guardians"
 BRAND_WEBSITE = ""          # optional, shown on report cover if set
 BRAND_EMAIL = ""            # optional contact e-mail for the report
 
@@ -26,10 +26,10 @@ AUTHOR_TITLE = "Master in Cyber Security"
 # ---------------------------------------------------------------------------
 # Colour palette (hex). Used by both the web UI and the PDF report.
 # ---------------------------------------------------------------------------
-COLOR_PRIMARY = "#0a1f44"   # deep navy
-COLOR_ACCENT = "#e63946"    # RJHex red
-COLOR_ACCENT2 = "#2a9d8f"   # teal (secondary)
-COLOR_LIGHT = "#eef2f9"
+COLOR_PRIMARY = "#123E6B"   # Tech Guardians navy (shield)
+COLOR_ACCENT = "#1E9E4F"    # green (the "G")
+COLOR_ACCENT2 = "#F59E1E"   # orange (the "T")
+COLOR_LIGHT = "#eef3f9"
 COLOR_INK = "#16202e"
 
 # ---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ COLOR_INK = "#16202e"
 # ---------------------------------------------------------------------------
 REPORT_CLASSIFICATION = "CONFIDENTIAL"
 REPORT_TITLE = "Security Assessment Report"
-REPORT_DOC_PREFIX = "RJHEX"           # used in document reference IDs
+REPORT_DOC_PREFIX = "TG"              # used in document reference IDs
 REPORT_STANDARDS = [
     "OWASP Testing Guide (WSTG) v4.2",
     "OWASP Top 10 (2021)",
