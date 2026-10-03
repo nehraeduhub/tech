@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Tech Guardians VAPT Portal{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="tg-header">
+    <div class="tg-brand">
+      <img src="{{ url_for('static', filename='logo.svg') }}" alt="Tech Guardians" class="tg-logo">
+      <div>
+        <div class="tg-name">Tech Guardians</div>
+        <div class="tg-tag">Vulnerability Assessment &amp; Penetration Testing</div>
+      </div>
+    </div>
+    <div class="tg-badge">AUTHORISED USE ONLY</div>
+  </header>
+  <main class="tg-main">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="tg-footer">
+    Tech Guardians VAPT Portal · Portable edition · For authorised security testing only.
+  </footer>
+</body>
+</html>

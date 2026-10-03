@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!-- Shield (solid fill so it renders in both the browser and the PDF) -->
+  <path d="M120 16 L212 52 V120 C212 176 170 210 120 226 C70 210 28 176 28 120 V52 Z"
+        fill="#0b3c82" stroke="#0a2d63" stroke-width="4"/>
+  <!-- Inner shield outline -->
+  <path d="M120 40 L190 68 V120 C190 164 158 192 120 205 C82 192 50 164 50 120 V68 Z"
+        fill="#1e6fd9" stroke="#9fc6ff" stroke-width="3"/>
+  <!-- Keyhole (guardian of access) -->
+  <circle cx="120" cy="104" r="26" fill="#ffffff"/>
+  <rect x="110" y="120" width="20" height="46" rx="6" fill="#ffffff"/>
+  <!-- Checkmark -->
+  <path d="M96 150 l16 16 l34 -40" fill="none" stroke="#0b3c82"
+        stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

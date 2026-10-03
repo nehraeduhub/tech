@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="tg-card">
+  <h1>Assessment in progress</h1>
+  <p class="tg-lead">Target: <strong>{{ target }}</strong></p>
+
+  <div class="tg-spinner" id="spinner"></div>
+  <div class="tg-status" id="statusText">Starting…</div>
+
+  <pre class="tg-log" id="log"></pre>
+</section>
+
+<script>
+const jobId = "{{ job_id }}";
+async function poll() {
+  try {
+    const r = await fetch(`/status/${jobId}`);
+    const d = await r.json();
+    document.getElementById("statusText").textContent =
+      "Status: " + (d.status || "unknown");
+    if (d.log) {
+      document.getElementById("log").textContent = d.log.join("\n");
+    }
+    if (d.status === "done") {
+      window.location = `/report/${jobId}`;
+      return;
+    }
+    if (d.status === "error") {
+      document.getElementById("spinner").style.display = "none";
+      document.getElementById("statusText").innerHTML =
+        '<span class="tg-error">Error: ' + (d.error || "unknown") + '</span>';
+      return;
+    }
+  } catch (e) { /* retry */ }
+  setTimeout(poll, 1500);
+}
+poll();
+</script>
+{% endblock %}

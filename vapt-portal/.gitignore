@@ -1,0 +1,8 @@
+# Portable runtime artifacts — do not commit
+.venv/
+__pycache__/
+*.pyc
+
+# Generated reports (keep the folder, not its contents)
+reports/*
+!reports/.gitkeep

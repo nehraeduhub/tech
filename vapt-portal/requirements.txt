@@ -1,0 +1,7 @@
+# Tech Guardians VAPT Portal - Python dependencies
+# Pure-Python stack so the portal runs from a USB stick with no system services.
+Flask==3.0.3
+requests==2.32.3
+reportlab==4.2.2
+svglib==1.5.1
+dnspython==2.6.1

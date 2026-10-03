@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="tg-card">
+  <div class="tg-report-head">
+    <div>
+      <h1>Assessment Report</h1>
+      <p class="tg-lead">{{ result.normalized_url }}</p>
+    </div>
+    <div class="tg-actions">
+      <a class="tg-btn" href="{{ url_for('download', job_id=job_id) }}">⬇ Download PDF</a>
+      <a class="tg-btn ghost" href="{{ url_for('download_json', job_id=job_id) }}">JSON</a>
+      <a class="tg-btn ghost" href="{{ url_for('index') }}">New scan</a>
+    </div>
+  </div>
+
+  <div class="tg-riskbar rating-{{ result.risk_rating|lower }}">
+    Overall risk: <strong>{{ result.risk_rating }}</strong>
+    (score {{ result.risk_score }}/100)
+  </div>
+
+  <div class="tg-counts">
+    {% for sev in ['critical','high','medium','low','info'] %}
+    <div class="count sev-{{ sev }}">
+      <div class="n">{{ result.severity_counts[sev] }}</div>
+      <div class="l">{{ sev|capitalize }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2>Findings</h2>
+  {% if result.findings %}
+    {% for f in result.findings %}
+    <article class="tg-finding">
+      <header>
+        <span class="sev-chip sev-{{ f.severity }}">{{ f.severity|upper }}</span>
+        <h3>{{ f.title }}</h3>
+      </header>
+      <div class="meta">{{ f.category }}</div>
+      <p>{{ f.description }}</p>
+      {% if f.evidence %}<pre class="evidence">{{ f.evidence }}</pre>{% endif %}
+      {% if f.attack_surface %}
+        <p class="attack"><strong>Could enable:</strong> {{ f.attack_surface|join(', ') }}</p>
+      {% endif %}
+      {% if f.recommendation %}
+        <p class="rec"><strong>Remediation:</strong> {{ f.recommendation }}</p>
+      {% endif %}
+    </article>
+    {% endfor %}
+  {% else %}
+    <p>No issues were detected by the automated checks. A manual review is still
+       recommended.</p>
+  {% endif %}
+</section>
+{% endblock %}

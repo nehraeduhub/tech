@@ -1,0 +1,72 @@
+:root{
+  --primary:#0b3c82; --accent:#1e6fd9; --light:#eaf2ff; --ink:#1b2430;
+  --crit:#b00020; --high:#e2571e; --med:#e0a800; --low:#2a9d8f; --info:#5a6470;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:#f4f7fb;color:var(--ink)}
+.tg-header{display:flex;justify-content:space-between;align-items:center;
+  background:var(--primary);color:#fff;padding:14px 28px}
+.tg-brand{display:flex;align-items:center;gap:14px}
+.tg-logo{width:46px;height:46px}
+.tg-name{font-size:20px;font-weight:700}
+.tg-tag{font-size:12px;color:#9fc6ff}
+.tg-badge{font-size:11px;letter-spacing:1px;background:#0a2d63;padding:6px 10px;
+  border-radius:4px;border:1px solid #2a5aa0}
+.tg-main{max-width:900px;margin:28px auto;padding:0 18px}
+.tg-card{background:#fff;border-radius:12px;padding:28px;
+  box-shadow:0 4px 18px rgba(11,60,130,.08)}
+h1{color:var(--primary);margin:0 0 6px}
+h2{color:var(--accent);margin-top:28px}
+.tg-lead{color:#4a5568;margin-top:0}
+.tg-form{display:flex;flex-direction:column;gap:16px;margin-top:18px}
+.tg-form label{display:flex;flex-direction:column;font-weight:600;font-size:14px;gap:6px}
+.tg-form input[type=text]{padding:12px;border:1px solid #cdd8e8;border-radius:8px;
+  font-size:15px;font-weight:400}
+.tg-form input[type=text]:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.tg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tg-check{flex-direction:row!important;align-items:flex-start;gap:10px;font-weight:400}
+.tg-authbox{background:var(--light);border:1px solid #cfe0ff;border-radius:8px;padding:14px}
+.tg-auth span{font-size:13px;line-height:1.5}
+.tg-btn{background:var(--accent);color:#fff;border:none;padding:13px 22px;
+  border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;
+  display:inline-block;text-align:center}
+.tg-btn:hover{background:var(--primary)}
+.tg-btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.tg-error{background:#fde8e8;color:#b00020;padding:12px 14px;border-radius:8px;
+  border:1px solid #f5c2c2;margin-bottom:12px}
+.tg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0;font-size:13px}
+.chip{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.chip.on{background:#e3f6ec;color:#1b7a46}
+.chip.off{background:#eee;color:#888}
+.tg-spinner{width:46px;height:46px;border:5px solid var(--light);
+  border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;
+  margin:26px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tg-status{text-align:center;font-weight:600;color:var(--primary)}
+.tg-log{background:#0d1b2a;color:#9fe0b0;padding:14px;border-radius:8px;
+  font-size:12px;max-height:280px;overflow:auto;margin-top:18px;white-space:pre-wrap}
+.tg-report-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.tg-actions{display:flex;gap:8px;flex-wrap:wrap}
+.tg-riskbar{padding:14px 18px;border-radius:8px;font-size:17px;margin:18px 0;color:#fff}
+.rating-critical{background:var(--crit)} .rating-high{background:var(--high)}
+.rating-medium{background:var(--med)} .rating-low{background:var(--low)}
+.rating-informational{background:var(--info)}
+.tg-counts{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.count{border-radius:8px;padding:14px;text-align:center;color:#fff}
+.count .n{font-size:26px;font-weight:800}
+.count .l{font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.sev-critical{background:var(--crit)} .sev-high{background:var(--high)}
+.sev-medium{background:var(--med)} .sev-low{background:var(--low)}
+.sev-info{background:var(--info)}
+.tg-finding{border:1px solid #e3e9f2;border-left:5px solid var(--accent);
+  border-radius:8px;padding:16px;margin:14px 0;background:#fcfdff}
+.tg-finding header{display:flex;align-items:center;gap:10px}
+.tg-finding h3{margin:0;font-size:16px}
+.sev-chip{color:#fff;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700}
+.tg-finding .meta{color:#7a8699;font-size:12px;margin:4px 0 8px}
+.evidence{background:#0d1b2a;color:#cfe0ff;padding:10px;border-radius:6px;
+  font-size:12px;overflow:auto;white-space:pre-wrap}
+.attack{color:#b00020} .rec{color:#1b7a46}
+.tg-footer{text-align:center;color:#8896ab;font-size:12px;padding:24px}
+@media(max-width:640px){.tg-grid,.tg-counts{grid-template-columns:1fr 1fr}}
