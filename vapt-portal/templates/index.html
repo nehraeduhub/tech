@@ -33,9 +33,25 @@
       </label>
     </div>
 
+    <div class="tg-grid">
+      <label>Assessment mode
+        <select name="mode" id="mode">
+          <option value="va" selected>VA — Vulnerability Assessment (safe, non-intrusive)</option>
+          <option value="vapt">VAPT — VA + Penetration Testing (active exploitation probes)</option>
+        </select>
+      </label>
+      <label>Sector / Domain (for PT recommendations)
+        <select name="sector">
+          {% for key, label in sectors.items() %}
+            <option value="{{ key }}" {{ 'selected' if key=='generic' else '' }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+
     <label class="tg-check">
       <input type="checkbox" name="use_external" checked>
-      Use installed open-source / Kali tools (nmap, nikto, nuclei, testssl.sh…) if available
+      Use installed open-source / Kali tools (nmap, nikto, nuclei, sqlmap, dalfox…) if available
     </label>
     <label class="tg-check">
       <input type="checkbox" name="port_scan" checked>
@@ -43,8 +59,19 @@
     </label>
     <label class="tg-check">
       <input type="checkbox" name="active_tools" checked>
-      Allow <strong>active</strong> tools (nuclei, wpscan, dir brute-force) — more thorough, more intrusive
+      Allow <strong>active</strong> tools (nuclei, wpscan, dir brute-force)
     </label>
+
+    <div class="tg-authbox" id="ptbox" style="display:none">
+      <label class="tg-check tg-auth">
+        <input type="checkbox" name="pt_scope">
+        <span><strong>Penetration-test scope confirmation.</strong> I confirm the
+        target is explicitly in scope for <strong>active penetration testing</strong>,
+        that I have written permission for exploitation-style testing, and I accept
+        that non-destructive injection probes (XSS, SQLi, command-injection, LFI,
+        open-redirect) and exploitation tools will be run against it.</span>
+      </label>
+    </div>
 
     <div class="tg-authbox">
       <label class="tg-check tg-auth">
@@ -59,4 +86,11 @@
     <button type="submit" class="tg-btn">Start Assessment</button>
   </form>
 </section>
+<script>
+  const modeSel = document.getElementById('mode');
+  const ptbox = document.getElementById('ptbox');
+  function togglePT(){ ptbox.style.display = modeSel.value === 'vapt' ? 'block' : 'none'; }
+  modeSel.addEventListener('change', togglePT);
+  togglePT();
+</script>
 {% endblock %}

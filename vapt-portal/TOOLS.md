@@ -102,3 +102,36 @@ whatever is on `PATH`.
 Start the portal — the home page shows a green ✓ next to every tool it found.
 Anything not installed simply shows `—` and is skipped; the built-in checks
 still run.
+
+---
+
+## Penetration-testing (PT) tools — for Full VAPT mode
+
+These power the active exploitation-verification layer. All are free/open-source
+and used in **non-destructive, confirmation** modes. The portal auto-detects them.
+
+```bash
+# Kali / Debian
+sudo apt update
+sudo apt install -y sqlmap commix nmap
+
+# Go-based XSS scanner
+go install github.com/hahwul/dalfox/v2@latest
+
+# Python-based (optional alternatives)
+pipx install xsstrike         # or: git clone https://github.com/s0md3v/XSStrike
+pipx install wapiti3          # black-box web scanner
+```
+
+| Tool | Confirms | How the portal uses it |
+|------|----------|------------------------|
+| **sqlmap** | SQL injection | `--batch --level=1 --risk=1 --smart` (read-only confirm) |
+| **dalfox** | XSS | `dalfox url <u> --silence` (PoC generation) |
+| **xsstrike** | XSS | reflected-XSS fuzzing (alt to dalfox) |
+| **commix** | Command injection | `--batch --level=1` |
+| **nmap** | Service CVEs | `--script vuln` NSE scripts |
+| **nuclei** | CVE/exposure templates | low→critical templates |
+
+> ⚠️ **Full VAPT runs active exploitation probes.** Use it **only** on targets
+> explicitly in your authorised penetration-test scope. The portal requires a
+> separate scope confirmation before PT runs.

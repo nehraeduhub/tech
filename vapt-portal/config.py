@@ -55,6 +55,16 @@ DEFAULT_ENABLE_ACTIVE_TOOLS = True   # active external tools if installed
 DEFAULT_PORT_SCAN = True             # built-in TCP connect scan
 
 # ---------------------------------------------------------------------------
+# Penetration-testing (PT) layer
+# ---------------------------------------------------------------------------
+# PT adds active, NON-DESTRUCTIVE exploitation-verification probes (crawl +
+# XSS/SQLi/CMDi/LFI/redirect) and drives installed exploitation tools (sqlmap,
+# dalfox, commix, nmap vuln scripts...). It runs ONLY when the operator both
+# enables PT mode AND confirms the target is in authorised test scope.
+PT_CRAWL_MAX_PAGES = 40
+PT_CRAWL_MAX_DEPTH = 2
+
+# ---------------------------------------------------------------------------
 # Access control & licensing
 # ---------------------------------------------------------------------------
 # 1) PORTAL LOGIN -----------------------------------------------------------

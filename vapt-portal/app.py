@@ -124,6 +124,9 @@ def _run_job(job_id: str) -> None:
             use_external_tools=job.get("use_external", True),
             enable_active_tools=job.get("active_tools", True),
             port_scan=job.get("port_scan", True),
+            pt_enabled=job.get("pt_enabled", False),
+            pt_scope_authorized=job.get("pt_scope", False),
+            sector=job.get("sector", "generic"),
         )
         rd = result.to_dict()
         job["result"] = rd
@@ -153,22 +156,32 @@ def _run_job(job_id: str) -> None:
 
 @app.route("/")
 def index():
-    return render_template("index.html", tools=available_tools())
+    from scanner.pt_recommendations import SECTORS
+    return render_template("index.html", tools=available_tools(), sectors=SECTORS)
 
 
 @app.route("/scan", methods=["POST"])
 def scan():
+    from scanner.pt_recommendations import SECTORS
     target = (request.form.get("target") or "").strip()
     authorised = request.form.get("authorised") == "on"
-    if not authorised:
+    mode = request.form.get("mode") or "va"
+    pt_enabled = mode == "vapt"
+    pt_scope = request.form.get("pt_scope") == "on"
+
+    def _err(msg, c=400):
         return render_template("index.html", tools=available_tools(),
-                               error="You must confirm written authorisation "
-                                     "before scanning."), 400
+                               sectors=SECTORS, error=msg), c
+
+    if not authorised:
+        return _err("You must confirm written authorisation before scanning.")
+    if pt_enabled and not pt_scope:
+        return _err("Full VAPT runs active exploitation probes. You must confirm "
+                    "the target is in authorised penetration-test scope.")
     try:
         normalize_target(target)  # validate early
     except ValueError as exc:
-        return render_template("index.html", tools=available_tools(),
-                               error=f"Invalid target: {exc}"), 400
+        return _err(f"Invalid target: {exc}")
 
     job_id = uuid.uuid4().hex[:12]
     with JOBS_LOCK:
@@ -181,6 +194,9 @@ def scan():
             "use_external": request.form.get("use_external") == "on",
             "active_tools": request.form.get("active_tools") == "on",
             "port_scan": request.form.get("port_scan") == "on",
+            "pt_enabled": pt_enabled,
+            "pt_scope": pt_scope,
+            "sector": request.form.get("sector") or "generic",
             "created": datetime.now().isoformat(),
         }
     threading.Thread(target=_run_job, args=(job_id,), daemon=True).start()

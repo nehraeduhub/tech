@@ -15,8 +15,9 @@ import config
 from .models import ScanResult
 from .checks import (
     http_security, tls, exposure, email_dns, cors, content, ports, waf,
-    external_tools,
+    external_tools, crawler, injection, pt_tools,
 )
+from . import pt_recommendations
 
 _HOST_RE = re.compile(r"^[a-zA-Z0-9.\-:]+$")
 
@@ -41,12 +42,25 @@ def run_scan(
     enable_active_tools: bool = True,
     port_scan: bool = True,
     deep_dns: bool = True,
+    pt_enabled: bool = False,
+    pt_scope_authorized: bool = False,
+    sector: str = "generic",
 ) -> ScanResult:
+    """Run a VA (default) or full VAPT assessment.
+
+    pt_enabled + pt_scope_authorized together switch on the penetration-testing
+    layer (crawl -> active injection probes -> exploitation tools). PT never runs
+    without an explicit scope authorisation flag.
+    """
     url = normalize_target(raw_target)
     timeout = config.DEFAULT_HTTP_TIMEOUT
     result = ScanResult(target=raw_target, normalized_url=url)
     result.started_at = datetime.now(timezone.utc).isoformat()
-    result.log(f"Assessment started against {url}")
+    mode = "VAPT (VA + PT)" if (pt_enabled and pt_scope_authorized) else "VA"
+    result.meta["mode"] = mode
+    result.meta["sector"] = sector
+    result.meta["pt_recommendations"] = pt_recommendations.get(sector)
+    result.log(f"Assessment started against {url} — mode: {mode}")
 
     # Pure-Python, always-available checks.
     builtins = [
@@ -81,6 +95,25 @@ def run_scan(
             external_tools.run(url, result, enable_active=enable_active_tools)
         except Exception as exc:  # noqa: BLE001
             result.errors.append(f"External tool error: {exc}")
+
+    # ---- Penetration-testing layer (only with explicit scope authorisation) ----
+    if pt_enabled and pt_scope_authorized:
+        result.log("PT layer enabled (scope authorised): crawling + active probes")
+        surface = {"get_params": [], "forms": []}
+        try:
+            surface = crawler.crawl(url, result)
+        except Exception as exc:  # noqa: BLE001
+            result.errors.append(f"Crawler error: {exc}")
+        try:
+            injection.run(surface, result, timeout)
+        except Exception as exc:  # noqa: BLE001
+            result.errors.append(f"Injection probe error: {exc}")
+        try:
+            pt_tools.run(url, surface, result)
+        except Exception as exc:  # noqa: BLE001
+            result.errors.append(f"PT tool error: {exc}")
+    elif pt_enabled and not pt_scope_authorized:
+        result.log("PT requested but scope NOT authorised — PT layer skipped")
 
     if not result.findings:
         result.log("No issues detected by the automated checks")

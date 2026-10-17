@@ -52,6 +52,23 @@ First launch builds a local virtualenv *on the stick* and installs Python deps
 - Built-in TCP port scan of common ports
 - WAF / CDN detection
 
+### Penetration-testing layer (Full VAPT mode)
+Select **VAPT** mode in the portal to add an active, **non-destructive**
+exploitation-verification layer on top of VA:
+- **Crawler** — discovers URLs, parameters and forms (the real attack surface).
+- **Active probes** — confirm **reflected XSS, SQL injection** (error / boolean /
+  time-based), **OS command injection**, **path traversal / LFI** and **open
+  redirect**, each reported as a *Confirmed* finding with evidence.
+- **PT tool orchestration** — drives **sqlmap, dalfox, commix, nmap vuln scripts,
+  xsstrike** (if installed) for tool-confirmed proof.
+- **Sector-aware PT recommendations** — pick the target's sector and the report
+  adds the relevant threats (with India context), recommended penetration tests,
+  and applicable compliance (CERT-In, RBI, PCI-DSS, DPDP Act…).
+
+PT runs **only** when you select VAPT mode **and** tick the separate
+penetration-test scope confirmation. Probes are non-destructive (no data change,
+no DoS). See **TOOLS.md** for the PT tool install list.
+
 ### Optional external tools (auto-detected; see **TOOLS.md**)
 nmap · nikto · nuclei · wpscan · wapiti · whatweb · wafw00f · sslscan ·
 testssl.sh · sslyze · dnsrecon · subfinder · sublist3r · amass · gobuster ·

@@ -189,6 +189,7 @@ def build_report(result_dict, output_path, client_name="", assessor="",
     s += _remediation_roadmap(result_dict, styles)
     s.append(PageBreak())
     s += _compliance(result_dict, styles)
+    s += _pt_recommendations(result_dict, styles)
     s += _appendix(result_dict, styles)
     doc.build(s)
     return output_path
@@ -288,7 +289,7 @@ def _toc(styles):
         "1. Executive Summary", "2. Scope & Methodology",
         "3. Findings Summary", "4. Detailed Findings",
         "5. Remediation Roadmap", "6. Compliance Mapping",
-        "7. Appendices",
+        "7. Penetration Testing — Recommendations", "8. Appendices",
     ]
     flow = [Spacer(1, 6 * mm), Paragraph("Table of Contents", styles["RJH1"])]
     flow.append(ListFlowable(
@@ -523,8 +524,55 @@ def _compliance(r, styles):
     return flow
 
 
+def _pt_recommendations(r, styles):
+    rec = r.get("meta", {}).get("pt_recommendations")
+    flow = [PageBreak(),
+            Paragraph("7. Penetration Testing — Recommendations", styles["RJH1"])]
+    mode = r.get("meta", {}).get("mode", "VA")
+    surface = r.get("meta", {}).get("attack_surface")
+    flow.append(Paragraph(f"Assessment mode: <b>{_esc(mode)}</b>.",
+                          styles["RJBody"]))
+    if surface:
+        flow.append(Paragraph(
+            f"Attack surface discovered: {surface.get('pages_crawled',0)} pages, "
+            f"{surface.get('parameterised_urls',0)} parameterised URLs, "
+            f"{surface.get('forms',0)} forms.", styles["RJBody"]))
+    # Confirmed exploit count
+    confirmed = [f for f in r.get("findings", [])
+                 if f.get("confidence") == "Confirmed"]
+    if confirmed:
+        flow.append(Paragraph(
+            f"<b>{len(confirmed)} vulnerability/vulnerabilities were actively "
+            f"confirmed (proof-of-concept) during penetration testing.</b>",
+            styles["RJBody"]))
+    if not rec:
+        return flow
+
+    flow.append(Paragraph(f"7.1 Sector Threat Profile — {_esc(rec['sector'])}",
+                          styles["RJH2"]))
+    flow.append(Paragraph("Most relevant cyber threats for this sector:",
+                          styles["RJBody"]))
+    flow.append(ListFlowable([ListItem(Paragraph(_esc(t), styles["RJBody"]))
+                             for t in rec["threats"]], bulletType="bullet"))
+    flow.append(Paragraph(f"<b>India context:</b> {_esc(rec['india_context'])}",
+                          styles["RJBody"]))
+
+    flow.append(Paragraph("7.2 Recommended Penetration Tests", styles["RJH2"]))
+    flow.append(ListFlowable([ListItem(Paragraph(_esc(t), styles["RJBody"]))
+                             for t in rec["pt_focus"]], bulletType="bullet"))
+
+    flow.append(Paragraph("7.3 Applicable Compliance", styles["RJH2"]))
+    flow.append(Paragraph(", ".join(_esc(c) for c in rec["compliance"]),
+                          styles["RJBody"]))
+
+    flow.append(Paragraph("7.4 Global Threat Trends", styles["RJH2"]))
+    flow.append(ListFlowable([ListItem(Paragraph(_esc(t), styles["RJBody"]))
+                             for t in rec["world_trends"]], bulletType="bullet"))
+    return flow
+
+
 def _appendix(r, styles):
-    flow = [PageBreak(), Paragraph("7. Appendices", styles["RJH1"])]
+    flow = [PageBreak(), Paragraph("8. Appendices", styles["RJH1"])]
     tools = r.get("meta", {}).get("external_tools", {})
     used = [n for n, ok in tools.items() if ok]
     flow.append(Paragraph("7.1 Tools & Environment", styles["RJH2"]))
